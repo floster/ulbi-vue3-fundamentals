@@ -8,16 +8,19 @@
     <div v-else class="posts">
       <div class="posts__controls">
         <app-input v-model="filterTerm" placeholder="filter posts..."></app-input>
+        <app-checkbox label="inifinite scroll" v-model="infiniteScroll"></app-checkbox>
         <app-select :options="sortOptions" v-model="currentSort"></app-select>
       </div>
       <posts-list :posts="filteredPosts" @delete="deletePost" />
       <app-pagination
+        v-if="!infiniteScroll"
         :page="currentPage"
         :maxPage="maxPages"
         @nextPage="handleNextPage"
         @prevPage="handlePrevPage"
       ></app-pagination>
     </div>
+    <div id="infinite-scroll-trigger" ref="infiniteScrollTrigger"></div>
   </div>
 </template>
 
@@ -44,8 +47,10 @@ export default {
         { name: 'Title', value: 'title' },
         { name: 'Body', value: 'body' }
       ],
-      currentSort: 'title',
-      filterTerm: ''
+      currentSort: 'id',
+      filterTerm: '',
+      // change it manually HERE not in UI
+      infiniteScroll: true
     }
   },
   methods: {
@@ -61,13 +66,11 @@ export default {
     handleNextPage() {
       if (this.currentPage < this.maxPages) {
         this.currentPage = this.currentPage + 1
-        this.getPosts()
       }
     },
     handlePrevPage() {
       if (this.currentPage > 1) {
         this.currentPage = this.currentPage - 1
-        this.getPosts()
       }
     },
     async getPosts() {
@@ -77,11 +80,24 @@ export default {
           `https://jsonplaceholder.typicode.com/posts?_limit=10&_page=${this.currentPage}`
         )
         const data = await response.json()
+        console.log(data)
         this.posts = data
       } catch (error) {
         console.error(error)
       } finally {
         this.postLoading = false
+      }
+    },
+    async getInfinitePosts() {
+      try {
+        this.currentPage += 1
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/posts?_limit=10&_page=${this.currentPage}`
+        )
+        const data = await response.json()
+        this.posts = [...this.posts, ...data]
+      } catch (error) {
+        console.error(error)
       }
     },
     sortPosts() {
@@ -94,9 +110,6 @@ export default {
       })
     }
   },
-  mounted() {
-    this.getPosts()
-  },
   computed: {
     sortedPosts() {
       return this.sortPosts()
@@ -107,6 +120,30 @@ export default {
             post.title.toLowerCase().includes(this.filterTerm.toLowerCase())
           )
         : this.sortedPosts
+    }
+  },
+  watch: {
+    currentPage() {
+      !this.infiniteScroll && this.getPosts()
+    }
+  },
+  mounted() {
+    this.getPosts()
+
+    // IntersectionObserver
+    const observerConfig = {
+      rootMargin: '0px',
+      threshold: 1.0
+    }
+    const observerCallback = (entries) => {
+      if (entries[0].isIntersecting && this.currentPage < this.maxPages) {
+        this.getInfinitePosts()
+      }
+    }
+
+    if (this.infiniteScroll) {
+      const observer = new IntersectionObserver(observerCallback, observerConfig)
+      observer.observe(this.$refs.infiniteScrollTrigger)
     }
   }
 }
