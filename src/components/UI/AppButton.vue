@@ -16,10 +16,10 @@ export default {
 
 <style scoped lang="scss">
 .app-button {
-  border: 1px solid lightseagreen;
-  background-color: lightseagreen;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
   border-radius: 2px;
-  height: 2rem;
+  height: 2.4rem;
   color: white;
   padding: 0 1rem;
 
@@ -29,8 +29,8 @@ export default {
   }
 
   &.m-alt {
-    background-color: mediumvioletred;
-    border-color: mediumvioletred;
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
 
     &:hover {
       background-color: mediumorchid;
@@ -39,8 +39,8 @@ export default {
   }
 
   &.m-danger {
-    border-color: lightsalmon;
-    background-color: lightsalmon;
+    border-color: var(--color-danger);
+    background-color: var(--color-danger);
 
     &:hover {
       border-color: salmon;

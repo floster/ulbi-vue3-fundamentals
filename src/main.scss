@@ -1,7 +1,30 @@
+:root {
+  --color-light: #dbebfa;
+  --color-shade: #004d73;
+  --color-primary: #007fbd;
+  --color-dark: #00334e;
+  --color-danger: #fc636b;
+  --color-warning: #ffb900;
+  --color-accent: #6a67ce;
+  --font-impact: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
 *,
 *::after,
 *::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+.content {
+  padding: 2rem 4rem;
 }

@@ -25,7 +25,7 @@ export default {
 .app-input {
   border: 1px solid steelblue;
   border-radius: 2px;
-  height: 2rem;
+  height: 2.4rem;
   padding: 0 1rem;
 }
 </style>

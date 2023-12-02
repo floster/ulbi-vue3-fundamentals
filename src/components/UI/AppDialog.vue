@@ -1,7 +1,7 @@
 <template>
   <dialog class="app-dialog" ref="dialog">
     <header class="app-dialog__header">
-      <h4>{{ title }}</h4>
+      <h3>{{ title }}</h3>
       <app-button class="m-square m-danger m-absolute" @click="close">×</app-button>
     </header>
     <slot></slot>
@@ -35,18 +35,19 @@ export default {
 <style lang="scss" scoped>
 .app-dialog {
   margin: auto;
-  padding: 0.5rem;
+  padding: 1rem;
   border: none;
   border-radius: 0.5rem;
   background-color: transparent;
   overflow: hidden;
   width: 98%;
   max-width: 32rem;
-  box-shadow: 0 1rem 2rem -4px darkslategrey;
+  box-shadow: 0 2rem 6rem -1.5rem black;
+  backdrop-filter: blur(10px);
 
   &::backdrop {
-    background-image: linear-gradient(45deg, magenta, rebeccapurple, dodgerblue, green);
-    opacity: 0.85;
+    background: linear-gradient(90deg, #f8d5c6, #2e537c);
+    opacity: 0.95;
   }
 
   &__header {
@@ -54,7 +55,9 @@ export default {
     display: flex;
     align-items: center;
     padding: 0 0.25rem;
-    min-height: 2rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-impact);
+    color: var(--color-shade);
   }
 
   .app-button {

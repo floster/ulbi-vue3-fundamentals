@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import PostsListItem from './PostsListItem.vue'
+import PostsListItem from '@/components/PostsListItem.vue'
 export default {
   components: {
     PostsListItem

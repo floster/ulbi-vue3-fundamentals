@@ -33,10 +33,10 @@ export default {
 .form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
   padding: 1rem;
-  background-color: white;
-  border: 4px solid steelblue;
+  background-color: var(--color-light);
+  border: 4px solid var(--color-shade);
   border-radius: 8px;
   width: 100%;
 }
