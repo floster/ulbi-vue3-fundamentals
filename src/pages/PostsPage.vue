@@ -7,7 +7,7 @@
     <app-loader v-if="postLoading" style="margin: auto" :visible="true"></app-loader>
     <div v-else class="posts">
       <div class="posts__controls">
-        <app-input v-model="filterTerm" placeholder="filter posts..."></app-input>
+        <app-input v-focus v-model="filterTerm" placeholder="filter posts..."></app-input>
         <app-checkbox label="inifinite scroll" v-model="infiniteScroll"></app-checkbox>
         <app-select :options="sortOptions" v-model="currentSort"></app-select>
       </div>
@@ -20,7 +20,7 @@
         @prevPage="handlePrevPage"
       ></app-pagination>
     </div>
-    <div id="infinite-scroll-trigger" ref="infiniteScrollTrigger"></div>
+    <div class="observer" ref="observer" v-observer="getInfinitePosts"></div>
   </main>
 </template>
 
@@ -80,7 +80,6 @@ export default {
           `https://jsonplaceholder.typicode.com/posts?_limit=10&_page=${this.currentPage}`
         )
         const data = await response.json()
-        console.log(data)
         this.posts = data
       } catch (error) {
         console.error(error)
@@ -129,22 +128,6 @@ export default {
   },
   mounted() {
     this.getPosts()
-
-    // IntersectionObserver
-    const observerConfig = {
-      rootMargin: '0px',
-      threshold: 1.0
-    }
-    const observerCallback = (entries) => {
-      if (entries[0].isIntersecting && this.currentPage < this.maxPages) {
-        this.getInfinitePosts()
-      }
-    }
-
-    if (this.infiniteScroll) {
-      const observer = new IntersectionObserver(observerCallback, observerConfig)
-      observer.observe(this.$refs.infiniteScrollTrigger)
-    }
   }
 }
 </script>
